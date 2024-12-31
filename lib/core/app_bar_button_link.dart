@@ -14,8 +14,10 @@ class AppBarButtonLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: FaIcon(
+        
         icon,
         size: 24,
+        color: Colors.white,
       ),
       onPressed: () async {
         final websiteUrl = Uri.parse(linkUrl);
