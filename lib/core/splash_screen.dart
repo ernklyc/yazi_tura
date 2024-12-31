@@ -137,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                             ),
                             SizedBox(width: iconSize * 0.4),
                             Container(
-                              padding: EdgeInsets.all(iconSize * 0.15),
+                              padding: EdgeInsets.all(iconSize * 0.3),
                               decoration: BoxDecoration(
                                 color: Colors.white.withOpacity(0.1),
                                 shape: BoxShape.circle,

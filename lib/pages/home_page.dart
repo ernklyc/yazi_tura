@@ -184,7 +184,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+        children: [
                   Icon(
                     choice == 'HEADS' ? FontAwesomeIcons.one : FontAwesomeIcons.userLarge,
                     size: buttonSize * 0.4,
@@ -344,7 +344,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ],
           ),
         ),
-      ),
+          ),
     );
   }
 
@@ -357,52 +357,251 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: SafeArea(
         top: true,
         bottom: true,
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(flex: 2, child: _buildPlayerSection(
-              'PLAYER 1',
-              player1Score,
-              player1Choice,
-              player1Ready,
-              (choice) => setState(() => player1Choice = choice),
-              () {
-                setState(() => player1Ready = true);
-                _checkBothReady();
-              },
-              true,
-            )),
-            Container(
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                border: Border(
-                  top: BorderSide(color: borderColor, width: 1),
-                  bottom: BorderSide(color: borderColor, width: 1),
-                ),
-              ),
-              height: MediaQuery.of(context).size.height * 0.35,
-              child: Center(
-                child: FlipCoin(
-                  onResult: (String result) {
-                    if (isFlipping) {
-                      _checkWinner(result);
-                    }
+            Column(
+              children: [
+                Expanded(flex: 2, child: _buildPlayerSection(
+                  'PLAYER 1',
+                  player1Score,
+                  player1Choice,
+                  player1Ready,
+                  (choice) => setState(() => player1Choice = choice),
+                  () {
+                    setState(() => player1Ready = true);
+                    _checkBothReady();
                   },
-                  shouldFlip: isFlipping,
+                  true,
+                )),
+                Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    border: Border(
+                      top: BorderSide(color: borderColor, width: 1),
+                      bottom: BorderSide(color: borderColor, width: 1),
+                    ),
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  child: Center(
+                    child: FlipCoin(
+                      onResult: (String result) {
+                        if (isFlipping) {
+                          _checkWinner(result);
+                        }
+                      },
+                      shouldFlip: isFlipping,
+                    ),
+                  ),
+                ),
+                Expanded(flex: 2, child: _buildPlayerSection(
+                  'PLAYER 2',
+                  player2Score,
+                  player2Choice,
+                  player2Ready,
+                  (choice) => setState(() => player2Choice = choice),
+                  () {
+                    setState(() => player2Ready = true);
+                    _checkBothReady();
+                  },
+                  false,
+                )),
+              ],
+            ),
+            Positioned(
+              right: 16,
+              bottom: 16,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.code,
+                              color: Colors.white.withOpacity(0.7),
+                              size: 30,
+                            ),
+                            const SizedBox(height: 15),
+                            Text(
+                              'Geliştirici',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.7),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            const Text(
+                              'Eren Kalaycı',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.1),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.envelope,
+                                    color: Colors.white.withOpacity(0.7),
+                                    size: 14,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'ernklyc@gmail.com',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.info,
+                    color: Colors.white.withOpacity(0.7),
+                    size: 18,
+                  ),
                 ),
               ),
             ),
-            Expanded(flex: 2, child: _buildPlayerSection(
-              'PLAYER 2',
-              player2Score,
-              player2Choice,
-              player2Ready,
-              (choice) => setState(() => player2Choice = choice),
-              () {
-                setState(() => player2Ready = true);
-                _checkBothReady();
-              },
-              false,
-            )),
+            Positioned(
+              left: 16,
+              bottom: 16,
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: backgroundColor,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.building,
+                              color: Colors.white.withOpacity(0.7),
+                              size: 30,
+                            ),
+                            const SizedBox(height: 15),
+                            const Text(
+                              'Yelbegen Software',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.1),
+                                  width: 1,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    FontAwesomeIcons.envelope,
+                                    color: Colors.white.withOpacity(0.7),
+                                    size: 14,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'yelbegensoftwarespt@gmail.com',
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.building,
+                    color: Colors.white.withOpacity(0.7),
+                    size: 18,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
