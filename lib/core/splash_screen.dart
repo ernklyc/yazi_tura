@@ -69,53 +69,69 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final iconSize = (size.width * 0.15).clamp(40.0, 60.0);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 38, 38, 38),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _scaleAnimation.value,
-                  child: Transform.rotate(
-                    angle: _rotateAnimation.value * 3.14,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.one,
-                          size: 40,
-                          color: Colors.white,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Transform.rotate(
+                      angle: _rotateAnimation.value * 3.14,
+                      child: Container(
+                        padding: EdgeInsets.all(iconSize * 0.3),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.05),
+                          shape: BoxShape.circle,
                         ),
-                        SizedBox(width: 20),
-                        Icon(
-                          FontAwesomeIcons.userLarge,
-                          size: 40,
-                          color: Colors.white,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.one,
+                              size: iconSize,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: iconSize * 0.4),
+                            Icon(
+                              FontAwesomeIcons.userLarge,
+                              size: iconSize,
+                              color: Colors.white,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 30),
-            FadeTransition(
-              opacity: _opacityAnimation,
-              child: const Text(
-                'HEADS OR TAILS',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
+                  );
+                },
+              ),
+              const SizedBox(height: 30),
+              FadeTransition(
+                opacity: _opacityAnimation,
+                child: Column(
+                  children: [
+                    Text(
+                      'HEADS OR TAILS',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: (size.width * 0.06).clamp(20.0, 28.0),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

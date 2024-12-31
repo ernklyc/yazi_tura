@@ -26,13 +26,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool isFlipping = false;
 
   // Renk paleti
-  final Color primaryColor = const Color.fromARGB(255, 156, 0, 0);                       // İndigo - Hazır butonu
+  final Color primaryColor = const Color.fromARGB(255, 156, 0, 0);         // Kırmızı - Hazır butonu
   final Color accentColor = const Color(0xFF22C55E);                       // Yeşil - Seçili durum
   final Color backgroundColor = const Color.fromARGB(255, 38, 38, 38);     // Arka plan
   final Color textColor = Colors.white;                                    // Metinler
   final Color buttonColor = const Color(0xFF27272A);                      // Koyu gri - Butonlar
   final Color borderColor = const Color.fromARGB(255, 70, 70, 70);        // Çizgiler
-  
+  final Color winnerColor = const Color(0xFFFFD700);                      // Altın - Kazanan rengi
+
   late AnimationController _scoreController;
   late Animation<double> _scoreAnimation;
 
@@ -65,14 +66,83 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   void _checkWinner(String result) {
+    String winner = '';
     if (player1Choice == result) {
       setState(() => player1Score++);
+      winner = 'PLAYER 1';
       _scoreController.forward(from: 0);
     } else if (player2Choice == result) {
       setState(() => player2Score++);
+      winner = 'PLAYER 2';
       _scoreController.forward(from: 0);
     }
-    Future.delayed(const Duration(seconds: 2), _resetGame);
+
+    // Kazananı göster
+    if (winner.isNotEmpty) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        barrierColor: Colors.black54,
+        builder: (BuildContext context) => Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: 300,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: winnerColor, width: 2),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: winnerColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    FontAwesomeIcons.crown,
+                    color: winnerColor,
+                    size: 45,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  winner,
+                  style: TextStyle(
+                    color: winnerColor,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'WINS!',
+                  style: TextStyle(
+                    color: winnerColor.withOpacity(0.9),
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      // 2 saniye sonra dialogu kapat ve oyunu sıfırla
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          Navigator.of(context).pop();
+          _resetGame();
+        }
+      });
+    }
   }
 
   void _checkBothReady() {
@@ -82,6 +152,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildChoiceButton(String choice, bool isSelected, VoidCallback onPressed) {
+    double buttonSize = MediaQuery.of(context).size.width * 0.2;
+    buttonSize = buttonSize.clamp(60.0, 80.0); // Min 60, max 80
+
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),
       duration: const Duration(milliseconds: 300),
@@ -89,8 +162,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         return Transform.scale(
           scale: 0.9 + (0.1 * value),
           child: Container(
-            width: 80,
-            height: 80,
+            width: buttonSize,
+            height: buttonSize,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
@@ -114,14 +187,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 children: [
                   Icon(
                     choice == 'HEADS' ? FontAwesomeIcons.one : FontAwesomeIcons.userLarge,
-                    size: 32,
+                    size: buttonSize * 0.4,
                     color: isSelected ? accentColor : textColor,
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: buttonSize * 0.05),
                   Text(
                     choice,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: buttonSize * 0.175,
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                       letterSpacing: 0.5,
                       color: isSelected ? accentColor : textColor,
@@ -148,7 +221,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return Container(
       color: backgroundColor,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 15),
         child: RotatedBox(
           quarterTurns: isRotated ? 2 : 0,
           child: Column(
@@ -160,10 +233,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   color: textColor,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
+                  letterSpacing: 1.5,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               ScaleTransition(
                 scale: _scoreAnimation,
                 child: Container(
@@ -183,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
               if (!isReady) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       choice == 'YAZI',
                       () => onChoiceSelected('YAZI'),
                     ),
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 16),
                     _buildChoiceButton(
                       'TAILS',
                       choice == 'TURA',
@@ -202,10 +275,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   ],
                 ),
                 if (choice != null) ...[
-                  const SizedBox(height: 20),
-                  Container(
-                    width: 140,
-                    height: 45,
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    height: 40,
                     child: ElevatedButton(
                       onPressed: onReadyPressed,
                       style: ElevatedButton.styleFrom(
@@ -214,10 +286,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         elevation: 0,
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             isReady ? FontAwesomeIcons.check : FontAwesomeIcons.xmark,
@@ -230,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              letterSpacing: 1,
+                              letterSpacing: 1.2,
                               color: backgroundColor,
                             ),
                           ),
@@ -241,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ],
               ] else
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: BoxDecoration(
                     color: accentColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
@@ -262,7 +335,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           color: accentColor,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          letterSpacing: 0.8,
+                          letterSpacing: 1,
                         ),
                       ),
                     ],
@@ -282,20 +355,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: _buildPlayerSection(
-                'PLAYER 1',
-                player1Score,
-                player1Choice,
-                player1Ready,
-                (choice) => setState(() => player1Choice = choice),
-                () {
-                  setState(() => player1Ready = true);
-                  _checkBothReady();
-                },
-                true,
-              ),
-            ),
+            Expanded(flex: 2, child: _buildPlayerSection(
+              'PLAYER 1',
+              player1Score,
+              player1Choice,
+              player1Ready,
+              (choice) => setState(() => player1Choice = choice),
+              () {
+                setState(() => player1Ready = true);
+                _checkBothReady();
+              },
+              true,
+            )),
             Container(
               decoration: BoxDecoration(
                 color: backgroundColor,
@@ -304,7 +375,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   bottom: BorderSide(color: borderColor, width: 1),
                 ),
               ),
-              height: MediaQuery.of(context).size.height * 0.25,
+              height: MediaQuery.of(context).size.height * 0.35,
               child: Center(
                 child: FlipCoin(
                   onResult: (String result) {
@@ -316,20 +387,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Expanded(
-              child: _buildPlayerSection(
-                'PLAYER 2',
-                player2Score,
-                player2Choice,
-                player2Ready,
-                (choice) => setState(() => player2Choice = choice),
-                () {
-                  setState(() => player2Ready = true);
-                  _checkBothReady();
-                },
-                false,
-              ),
-            ),
+            Expanded(flex: 2, child: _buildPlayerSection(
+              'PLAYER 2',
+              player2Score,
+              player2Choice,
+              player2Ready,
+              (choice) => setState(() => player2Choice = choice),
+              () {
+                setState(() => player2Ready = true);
+                _checkBothReady();
+              },
+              false,
+            )),
           ],
         ),
       ),
