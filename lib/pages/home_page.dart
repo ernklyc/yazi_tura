@@ -352,7 +352,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      extendBodyBehindAppBar: true,
+      extendBody: true,
       body: SafeArea(
+        top: true,
+        bottom: true,
         child: Column(
           children: [
             Expanded(flex: 2, child: _buildPlayerSection(
