@@ -1,10 +1,5 @@
 # Yazı Tura Mobil Uygulaması
 
-[![Flutter Sürümü](https://img.shields.io/badge/Flutter-v3.x-blue.svg)](https://flutter.dev)
-[![Dart Sürümü](https://img.shields.io/badge/Dart-v3.x-orange.svg)](https://dart.dev)
-[![Lisans](https://img.shields.io/badge/Lisans-MIT-green.svg)](LICENSE) **Yazı Tura**, klasik yazı tura oyununu mobil platformlara taşıyan, Flutter ile geliştirilmiş kullanıcı dostu bir uygulamadır. İki oyunculu modu ile arkadaşlarınızla eğlenceli ve hızlı kararlar almanızı sağlar veya rastgele seçimler yapmanıza yardımcı olur.
-
-
 ## ✨ Öne Çıkan Özellikler
 
 * **İki Oyunculu Mod**: Her iki oyuncu da kendi tahminini (Yazı veya Tura) seçer.
