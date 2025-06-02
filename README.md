@@ -1,16 +1,19 @@
-# yazi_tura
+# Yazı Tura Mobil Uygulaması
 
-A new Flutter project.
+[![Flutter Sürümü](https://img.shields.io/badge/Flutter-v3.x-blue.svg)](https://flutter.dev)
+[![Dart Sürümü](https://img.shields.io/badge/Dart-v3.x-orange.svg)](https://dart.dev)
+[![Lisans](https://img.shields.io/badge/Lisans-MIT-green.svg)](LICENSE) **Yazı Tura**, klasik yazı tura oyununu mobil platformlara taşıyan, Flutter ile geliştirilmiş kullanıcı dostu bir uygulamadır. İki oyunculu modu ile arkadaşlarınızla eğlenceli ve hızlı kararlar almanızı sağlar veya rastgele seçimler yapmanıza yardımcı olur.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## ✨ Öne Çıkan Özellikler
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* **İki Oyunculu Mod**: Her iki oyuncu da kendi tahminini (Yazı veya Tura) seçer.
+* **Seçim ve Hazır Olma**: Oyuncular seçimlerini yaptıktan sonra "Hazır" butonuna basarak oyunu başlatmaya hazır olduklarını belirtirler.
+* **Etkileyici Para Çevirme Animasyonu**: `flip_card` paketi kullanılarak gerçekçi ve pürüzsüz bir para çevirme animasyonu sunulur.
+* **Otomatik Sonuç ve Kazanan Belirleme**: Para çevirme animasyonu tamamlandığında, sonuç (Yazı veya Tura) rastgele belirlenir ve kazanan oyuncu ilan edilir.
+* **Skor Takibi**: Her oyuncunun kazandığı oyun sayısı takip edilir ve ekranda gösterilir.
+* **Kazanan Bildirimi**: Oyun sonunda kazanan oyuncu özel bir diyalog penceresi ile duyurulur.
+* **Şık ve Kullanıcı Dostu Arayüz**: Modern tasarım anlayışıyla, koyu tema ve canlı renk paleti kullanılarak geliştirilmiştir.
+* **Profesyonel Açılış Ekranı**: Uygulama başlarken dikkat çekici animasyonlara sahip bir açılış ekranı kullanıcıyı karşılar.
+* **Geliştirici ve Firma Bilgileri**: Uygulama içinde geliştirici Eren Kalaycı ve Yelbegen Software hakkında bilgilere ulaşılabilir.
+* **Çoklu Platform Desteği**: Flutter sayesinde Android, iOS, Web, Windows, Linux ve macOS platformlarında çalışabilir.
